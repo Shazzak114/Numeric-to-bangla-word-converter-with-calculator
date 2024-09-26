@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Converter & Calculator</title>
+    <style>
+        /* General styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        /* Number Converter styles */
+        .number-converter {
+            width: 40%;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        /* Calculator styling */
+        .calculator {
+            max-width: 320px;
+            width: 100%;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background: #fff;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+            font-family: "Poppins", sans-serif;
+        }
+
+        .display {
+            height: 80px;
+            width: 100%;
+            outline: none;
+            border: none;
+            text-align: right;
+            margin-bottom: 10px;
+            font-size: 25px;
+            color: #000e1a;
+            pointer-events: none;
+        }
+
+        .buttons {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .buttons button {
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #eee;
+        }
+
+        .buttons button:active {
+            transform: scale(0.99);
+        }
+
+        .operator {
+            color: #2f9fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Number Converter Section -->
+    <div class="container number-converter">
+        <h2>Bangla Number to Numeric</h2>
+        <input type="text" id="banglaNumber" placeholder="Enter Bangla number (e.g., 90 crore 80 lac 49 hajar)">
+        <button onclick="convertToNumber()">Convert to Number</button>
+        <p id="result1"></p>
+
+        <h2>Number to Bangla Words</h2>
+        <input type="text" id="inputNumber" placeholder="Enter your number (e.g., 10,05,040,59.99)">
+        <button onclick="convertNumber()">Convert to Bangla Words</button>
+        <p id="result2"></p>
+    </div>
+
+    <!-- Calculator Section -->
+    <div class="container">
+        <input type="text" class="display" placeholder="Paste or enter numbers here" />
+        <div class="buttons">
+            <button class="operator" data-value="AC">AC</button>
+            <button class="operator" data-value="DEL">DEL</button>
+            <button class="operator" data-value="%">%</button>
+            <button class="operator" data-value="/">/</button>
+            <button data-value="7">7</button>
+            <button data-value="8">8</button>
+            <button data-value="9">9</button>
+            <button class="operator" data-value="*">*</button>
+            <button data-value="4">4</button>
+            <button data-value="5">5</button>
+            <button data-value="6">6</button>
+            <button class="operator" data-value="-">-</button>
+            <button data-value="1">1</button>
+            <button data-value="2">2</button>
+            <button data-value="3">3</button>
+            <button class="operator" data-value="+">+</button>
+            <button data-value="0">0</button>
+            <button data-value="00">00</button>
+            <button data-value=".">.</button>
+            <button class="operator" data-value="=">=</button>
+        </div>
+        <div class="history" id="history"></div>
+    </div>
+
+    <script>
+        const display = document.querySelector('.display');
+        const buttons = document.querySelectorAll('button');
+        const specialChars = ["%", "*", "/", "-", "+", "="];
+        let output = "";
+        let history = [];
+
+        // Add a function to display the history
+        const updateHistory = (calculation) => {
+            history.push(calculation);
+            if (history.length > 5) history.shift(); // Keep last 5 entries
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = history.map(item => `<div class="history-item">${item}</div>`).join('');
+        };
+
+        // Define function to calculate based on button clicked
+        const calculate = (btnValue) => {
+            display.focus();
+            if (btnValue === "=" && output !== "") {
+                try {
+                    // Evaluate the expression and update history
+                    let result = eval(output.replace("%", "/100"));
+                    updateHistory(output + " = " + result);
+                    output = result.toString();
+                } catch {
+                    output = "Error";
+                }
+            } else if (btnValue === "AC") {
+                output = "";
+            } else if (btnValue === "DEL") {
+                output = output.toString().slice(0, -1);
+            } else {
+                if (output === "" && specialChars.includes(btnValue)) return;
+                output += btnValue;
+            }
+            display.value = output;
+        };
+
+        // Add event listener to buttons
+        buttons.forEach((button) => {
+            button.addEventListener("click", (e) => calculate(e.target.dataset.value));
+        });
+
+        // Handle paste event to remove commas, decimal point, and digits after decimal point
+        display.addEventListener("paste", (e) => {
+            e.preventDefault();
+            let pasteData = e.clipboardData.getData("text");
+            pasteData = pasteData.replace(/,/g, "").replace(/\..*/, ""); // Remove commas and everything after the decimal point
+            output = pasteData;
+            display.value = output;
+        });
+
+        // Handle input event to sanitize input
+        display.addEventListener("input", (e) => {
+            output = display.value.replace(/,/g, "").replace(/\..*/, ""); // Remove commas and everything after the decimal point
+            display.value = output;
+        });
+    </script>
+    <script>
+        // Number to Bangla Numeric Conversion
+        function convertToNumber() {
+            const input = document.getElementById('banglaNumber').value;
+            const wordsToNumbers = {
+                'crore': 10000000,
+                'lac': 100000,
+                'hajar': 1000
+            };
+            let result = 0;
+            const parts = input.split(' ');
+
+            for (let i = 0; i < parts.length; i += 2) {
+                const number = parseInt(parts[i], 10);
+                const word = parts[i + 1];
+                result += number * (wordsToNumbers[word] || 1);
+            }
+
+            document.getElementById('result1').innerText = result;
+        }
+
+        const banglaNumbers = ["শূন্য", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়"];
+        const banglaWords = [
+            "", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়", "দশ", "এগারো", "বারো", 
+            "তেরো", "চৌদ্দ", "পনের", "ষোল", "সতেরো", "আঠার", "ঊনিশ", "বিশ", "একুশ", "বাইশ", "তেইশ", 
+            "চব্বিশ", "পঁচিশ", "ছাব্বিশ", "সাতাশ", "আঠাশ", "ঊনত্রিশ", "ত্রিশ", "একত্রিশ", "বত্রিশ", 
+            "তেত্রিশ", "চৌত্রিশ", "পঁয়ত্রিশ", "ছত্রিশ", "সাইত্রিশ", "আটত্রিশ", "ঊনচল্লিশ", "চল্লিশ", 
+            "একচল্লিশ", "বিয়াল্লিশ", "তেতাল্লিশ", "চুয়াল্লিশ", "পঁয়তাল্লিশ", "ছেচল্লিশ", "সাতচল্লিশ", 
+            "আটচল্লিশ", "ঊনপঞ্চাশ", "পঞ্চাশ", "একান্ন", "বায়ান্ন", "তিপ্পান্ন", "চুয়ান্ন", "পঞ্চান্ন", 
+            "ছাপ্পান্ন", "সাতান্ন", "আটান্ন", "ঊনষাট", "ষাট", "একষট্টি", "বাষট্টি", "তেষট্টি", "চৌষট্টি", 
+            "পঁয়ষট্টি", "ছেষট্টি", "সাতষট্টি", "আটষট্টি", "ঊনসত্তর", "সত্তর", "একাত্তর", "বাহাত্তর", 
+            "তিয়াত্তর", "চুয়াত্তর", "পঁচাত্তর", "ছিয়াত্তর", "সাতাত্তর", "আটাত্তর", "ঊনআশি", "আশি", 
+            "একাশি", "বিরাশি", "তিরাশি", "চুরাশি", "পঁচাশি", "ছিয়াশি", "সাতাশি", "আটাশি", "ঊননব্বই", 
+            "নব্বই", "একানব্বই", "বিরানব্বই", "তিরানব্বই", "চুরানব্বই", "পঁচানব্বই", "ছিয়ানব্বই", 
+            "সাতানব্বই", "আটানব্বই", "নিরানব্বই", "এক শত"
+        ];
+
+        function convertNumber() {
+            let input = document.getElementById("inputNumber").value;
+
+            // Step 1: Remove commas and dots
+            input = input.replace(/,/g, "").replace(/\./g, "");
+
+            // Step 2: Remove the last two digits
+            input = input.slice(0, -2);
+
+            // Step 3: Convert the number to Bangla words
+            let number = parseInt(input);
+            let banglaWord = numberToBangla(number);
+
+            // Display result
+            document.getElementById("result2").innerHTML = "Converted Number in Bangla: " + banglaWord;
+        }
+
+        function numberToBangla(number) {
+            if (number === 0) return banglaNumbers[0];
+
+            let crores = Math.floor(number / 10000000);
+            let lakhs = Math.floor((number % 10000000) / 100000);
+            let thousands = Math.floor((number % 100000) / 1000);
+            let hundreds = Math.floor((number % 1000) / 100);
+            let rest = number % 100;
+
+            let result = "";
+            if (crores) result += banglaWords[crores] + " কোটি ";
+            if (lakhs) result += banglaWords[lakhs] + " লক্ষ ";
+            if (thousands) result += banglaWords[thousands] + " হাজার ";
+            if (hundreds) result += banglaWords[hundreds] + " শত ";
+            if (rest) result += banglaWords[rest];
+
+            return result.trim();
+        }
+
+        
+    </script>
+</body>
+</html>
