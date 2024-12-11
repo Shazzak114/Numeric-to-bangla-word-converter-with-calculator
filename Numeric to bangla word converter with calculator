@@ -1,261 +1,467 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Converter & Calculator</title>
-    <style>
-        /* General styling for the page */
-        body {
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Checking Tools</title>
+      <style>
+         /* General Styling */
+         body {
+         font-family: 'Roboto', sans-serif;
+         background-color: #f0f0f0;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         padding: 20px;
+         min-height: 100vh;
+         margin: 0;
+         color: #333;
+         }
+         .wrapper {
+         width: 100%;
+         max-width: 850px;
+         }
+         .container {
+         background: #ffffff;
+         padding: 30px;
+         border-radius: 10px;
+         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+         box-sizing: border-box;
+         margin-bottom: 40px;
+         transition: transform 0.2s ease, box-shadow 0.3s ease;
+         }
+         .container:hover {
+         transform: translateY(-3px);
+         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+         }
+         h2 {
+         margin-bottom: 20px;
+         color: #007bff;
+         text-align: center;
+         font-size: 1.8em;
+         font-weight: 600;
+         }
+         .input-field,
+         .textarea-field {
+         width: 100%;
+         padding: 12px 15px;
+         font-size: 16px;
+         border: 1px solid #ccc;
+         border-radius: 5px;
+         box-sizing: border-box;
+         margin-bottom: 15px;
+         transition: border-color 0.3s, box-shadow 0.3s;
+         }
+         .textarea-field:focus,
+         .input-field:focus {
+         border-color: #007bff;
+         box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+         outline: none;
+         }
+         .button {
+         height: 50px;
+         padding: 0 25px;
+         font-size: 16px;
+         background-color: #007bff;
+         color: #fff;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+         width: 100%;
+         font-weight: 500;
+         text-align: center;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+         transition: all 0.3s ease;
+         }
+         .button:hover {
+         background-color: #0056b3;
+         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+         transform: translateY(-2px);
+         }
+         .button:active {
+         background-color: #004085;
+         transform: translateY(2px);
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+         }
+         .button:focus {
+         outline: none;
+         box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.4);
+         }
+         .output {
+         margin-top: 15px;
+         padding: 20px;
+         background-color: #f3f5f8;
+         border: 1px solid #e1e4e8;
+         border-radius: 5px;
+         font-size: 16px;
+         color: #333;
+         white-space: pre-wrap;
+         font-weight: 400;
+         }
+         .note {
+         color: #666;
+         font-size: 14px;
+         font-style: italic;
+         margin-top: 10px;
+         text-align: center;
+         }
+         /* Footer Styling */
+         footer {
+         position: fixed;
+         bottom: 10px;
+         right: 10px;
+         font-size: 10px;
+         color: #777;
+         font-style: italic;
+         opacity: 0.85;
+         }
+         .result {
+         margin-top: 20px;
+         padding: 10px;
+         background-color: #FFDDDD;
+         border-radius: 5px;
+         display: none;
+         }
+         .result.success {
+         background-color: #DDFFDD;
+         }
+         .result.success p {
+         color: #4CAF50;
+         }
+         .result p {
+         color: #F44336;
+         font-size: 18px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="wrapper">
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <!-- Subcompany Code Decoder Section -->
+         <div class="container">
+            <h2>Subcompany Code Decoder</h2>
+            <textarea id="inputText" class="textarea-field" rows="6" placeholder="Enter the company names here to replace with their respective codes..." onkeydown="checkEnter(event)"></textarea>
+            <button onclick="replaceText()" class="button">Decode</button>
+            <div id="output" class="output">The decoded text will appear here...</div>
+         </div>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <!-- Number Converter Section -->
+         <div class="container number-converter">
+            <h2> Script to Numeric </h2>
+            <input type="text" id="banglaNumber" placeholder="Enter Bangla number (e.g., 90 crore 80 lac 49 hajar)" class="input-field">
+            <button onclick="convertToNumber()" class="button">Convert to Number</button>
+            <p id="result1" class="output"></p>
+            <p class="note">Note: Enter only English number and word values. Example: "10 crore 20 lac 30 hajar" or "20 lac". Other values will not work here.</p>
+            <hr style="margin: 30px 0;">
+            <h2>Number to Bangla Words</h2>
+            <input type="text" id="inputNumber" placeholder="Enter your number (e.g., 10,05,040,59.99)" class="input-field">
+            <button onclick="convertNumber()" class="button">Convert to Bangla Words</button>
+            <p id="result2" class="output"></p>
+            <p class="note">Note: Enter a number between 1 to 999,999,999.</p>
+         </div>
+         <!-- File Checker Section -->
+         <div class="container">
+            <h2>Excel File Checker</h2>
+            <textarea id="excelFiles" class="textarea-field" placeholder="Paste your list of filenames here, each filename on a new line..."></textarea>
+            <button onclick="findMissingFiles()" class="button">Find Missing Files</button>
+            <div id="result" class="result"></div>
+         	<br>     
+  <br>
+            <p class="note">Note: Enter File Number from excel sheet. Another data will not work properly.</p>
+         </div>
+      </div>
+      <!-- Footer -->
+      <footer>Created by - Md. Shazzak Hossain</footer>
+      <script>
+    function findMissingFiles() {
+      // Get the pasted filenames from the textarea
+      const inputText = document.getElementById("excelFiles").value.trim();
+      if (!inputText) {
+        document.getElementById("result").innerHTML = "<p>Please paste the filenames into the input box!</p>";
+        document.getElementById("result").style.display = 'block';
+        return;
+      }
+
+      // Split the pasted input into an array of filenames
+      const files = inputText.split('\n').map(file => file.trim()).filter(file => file.length > 0);
+
+      // Extract serial numbers from filenames (ignoring file types such as .xls or .txt)
+      const fileNumbers = files.map(file => {
+        const match = file.match(/(\d{5})(?=\.\w+)/); // Extract the first 5 digits before any file extension (.xls, .txt, etc.)
+        return match ? parseInt(match[1], 10) : null;
+      }).filter(num => num !== null);
+
+      // Sort the serial numbers in ascending order
+      fileNumbers.sort((a, b) => a - b);
+
+      // Find the range of serial numbers (from the smallest to the largest)
+      const minFileNum = Math.min(...fileNumbers);
+      const maxFileNum = Math.max(...fileNumbers);
+
+      // Identify missing serial numbers within the range
+      let missingFiles = [];
+      for (let i = minFileNum; i <= maxFileNum; i++) {
+        if (!fileNumbers.includes(i)) {
+          missingFiles.push(i);
         }
+      }
 
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-        }
-
-        /* Number Converter styles */
-        .number-converter {
-            width: 40%;
-        }
-
-        input, button {
-            padding: 10px;
-            margin: 5px 0;
-            width: 100%;
-        }
-
-        /* Calculator styling */
-        .calculator {
-            max-width: 320px;
-            width: 100%;
-            border-radius: 12px;
-            padding: 10px 20px 20px;
-            background: #fff;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-            font-family: "Poppins", sans-serif;
-        }
-
-        .display {
-            height: 80px;
-            width: 100%;
-            outline: none;
-            border: none;
-            text-align: right;
-            margin-bottom: 10px;
-            font-size: 25px;
-            color: #000e1a;
-            pointer-events: none;
-        }
-
-        .buttons {
-            display: grid;
-            grid-gap: 10px;
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .buttons button {
-            padding: 10px;
-            border-radius: 6px;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #eee;
-        }
-
-        .buttons button:active {
-            transform: scale(0.99);
-        }
-
-        .operator {
-            color: #2f9fff;
-        }
-    </style>
-</head>
-<body>
-    <!-- Number Converter Section -->
-    <div class="container number-converter">
-        <h2>Bangla Number to Numeric</h2>
-        <input type="text" id="banglaNumber" placeholder="Enter Bangla number (e.g., 90 crore 80 lac 49 hajar)">
-        <button onclick="convertToNumber()">Convert to Number</button>
-        <p id="result1"></p>
-
-        <h2>Number to Bangla Words</h2>
-        <input type="text" id="inputNumber" placeholder="Enter your number (e.g., 10,05,040,59.99)">
-        <button onclick="convertNumber()">Convert to Bangla Words</button>
-        <p id="result2"></p>
-    </div>
-
-    <!-- Calculator Section -->
-    <div class="container">
-        <input type="text" class="display" placeholder="Paste or enter numbers here" />
-        <div class="buttons">
-            <button class="operator" data-value="AC">AC</button>
-            <button class="operator" data-value="DEL">DEL</button>
-            <button class="operator" data-value="%">%</button>
-            <button class="operator" data-value="/">/</button>
-            <button data-value="7">7</button>
-            <button data-value="8">8</button>
-            <button data-value="9">9</button>
-            <button class="operator" data-value="*">*</button>
-            <button data-value="4">4</button>
-            <button data-value="5">5</button>
-            <button data-value="6">6</button>
-            <button class="operator" data-value="-">-</button>
-            <button data-value="1">1</button>
-            <button data-value="2">2</button>
-            <button data-value="3">3</button>
-            <button class="operator" data-value="+">+</button>
-            <button data-value="0">0</button>
-            <button data-value="00">00</button>
-            <button data-value=".">.</button>
-            <button class="operator" data-value="=">=</button>
-        </div>
-        <div class="history" id="history"></div>
-    </div>
-
-    <script>
-        const display = document.querySelector('.display');
-        const buttons = document.querySelectorAll('button');
-        const specialChars = ["%", "*", "/", "-", "+", "="];
-        let output = "";
-        let history = [];
-
-        // Add a function to display the history
-        const updateHistory = (calculation) => {
-            history.push(calculation);
-            if (history.length > 5) history.shift(); // Keep last 5 entries
-            const historyDiv = document.getElementById('history');
-            historyDiv.innerHTML = history.map(item => `<div class="history-item">${item}</div>`).join('');
-        };
-
-        // Define function to calculate based on button clicked
-        const calculate = (btnValue) => {
-            display.focus();
-            if (btnValue === "=" && output !== "") {
-                try {
-                    // Evaluate the expression and update history
-                    let result = eval(output.replace("%", "/100"));
-                    updateHistory(output + " = " + result);
-                    output = result.toString();
-                } catch {
-                    output = "Error";
-                }
-            } else if (btnValue === "AC") {
-                output = "";
-            } else if (btnValue === "DEL") {
-                output = output.toString().slice(0, -1);
-            } else {
-                if (output === "" && specialChars.includes(btnValue)) return;
-                output += btnValue;
-            }
-            display.value = output;
-        };
-
-        // Add event listener to buttons
-        buttons.forEach((button) => {
-            button.addEventListener("click", (e) => calculate(e.target.dataset.value));
-        });
-
-        // Handle paste event to remove commas, decimal point, and digits after decimal point
-        display.addEventListener("paste", (e) => {
-            e.preventDefault();
-            let pasteData = e.clipboardData.getData("text");
-            pasteData = pasteData.replace(/,/g, "").replace(/\..*/, ""); // Remove commas and everything after the decimal point
-            output = pasteData;
-            display.value = output;
-        });
-
-        // Handle input event to sanitize input
-        display.addEventListener("input", (e) => {
-            output = display.value.replace(/,/g, "").replace(/\..*/, ""); // Remove commas and everything after the decimal point
-            display.value = output;
-        });
-    </script>
-    <script>
-        // Number to Bangla Numeric Conversion
-        function convertToNumber() {
-            const input = document.getElementById('banglaNumber').value;
-            const wordsToNumbers = {
-                'crore': 10000000,
-                'lac': 100000,
-                'hajar': 1000
-            };
-            let result = 0;
-            const parts = input.split(' ');
-
-            for (let i = 0; i < parts.length; i += 2) {
-                const number = parseInt(parts[i], 10);
-                const word = parts[i + 1];
-                result += number * (wordsToNumbers[word] || 1);
-            }
-
-            document.getElementById('result1').innerText = result;
-        }
-
-        const banglaNumbers = ["শূন্য", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়"];
-        const banglaWords = [
-            "", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়", "দশ", "এগারো", "বারো", 
-            "তেরো", "চৌদ্দ", "পনের", "ষোল", "সতেরো", "আঠার", "ঊনিশ", "বিশ", "একুশ", "বাইশ", "তেইশ", 
-            "চব্বিশ", "পঁচিশ", "ছাব্বিশ", "সাতাশ", "আঠাশ", "ঊনত্রিশ", "ত্রিশ", "একত্রিশ", "বত্রিশ", 
-            "তেত্রিশ", "চৌত্রিশ", "পঁয়ত্রিশ", "ছত্রিশ", "সাইত্রিশ", "আটত্রিশ", "ঊনচল্লিশ", "চল্লিশ", 
-            "একচল্লিশ", "বিয়াল্লিশ", "তেতাল্লিশ", "চুয়াল্লিশ", "পঁয়তাল্লিশ", "ছেচল্লিশ", "সাতচল্লিশ", 
-            "আটচল্লিশ", "ঊনপঞ্চাশ", "পঞ্চাশ", "একান্ন", "বায়ান্ন", "তিপ্পান্ন", "চুয়ান্ন", "পঞ্চান্ন", 
-            "ছাপ্পান্ন", "সাতান্ন", "আটান্ন", "ঊনষাট", "ষাট", "একষট্টি", "বাষট্টি", "তেষট্টি", "চৌষট্টি", 
-            "পঁয়ষট্টি", "ছেষট্টি", "সাতষট্টি", "আটষট্টি", "ঊনসত্তর", "সত্তর", "একাত্তর", "বাহাত্তর", 
-            "তিয়াত্তর", "চুয়াত্তর", "পঁচাত্তর", "ছিয়াত্তর", "সাতাত্তর", "আটাত্তর", "ঊনআশি", "আশি", 
-            "একাশি", "বিরাশি", "তিরাশি", "চুরাশি", "পঁচাশি", "ছিয়াশি", "সাতাশি", "আটাশি", "ঊননব্বই", 
-            "নব্বই", "একানব্বই", "বিরানব্বই", "তিরানব্বই", "চুরানব্বই", "পঁচানব্বই", "ছিয়ানব্বই", 
-            "সাতানব্বই", "আটানব্বই", "নিরানব্বই", "এক শত"
-        ];
-
-        function convertNumber() {
-            let input = document.getElementById("inputNumber").value;
-
-            // Step 1: Remove commas and dots
-            input = input.replace(/,/g, "").replace(/\./g, "");
-
-            // Step 2: Remove the last two digits
-            input = input.slice(0, -2);
-
-            // Step 3: Convert the number to Bangla words
-            let number = parseInt(input);
-            let banglaWord = numberToBangla(number);
-
-            // Display result
-            document.getElementById("result2").innerHTML = "Converted Number in Bangla: " + banglaWord;
-        }
-
-        function numberToBangla(number) {
-            if (number === 0) return banglaNumbers[0];
-
-            let crores = Math.floor(number / 10000000);
-            let lakhs = Math.floor((number % 10000000) / 100000);
-            let thousands = Math.floor((number % 100000) / 1000);
-            let hundreds = Math.floor((number % 1000) / 100);
-            let rest = number % 100;
-
-            let result = "";
-            if (crores) result += banglaWords[crores] + " কোটি ";
-            if (lakhs) result += banglaWords[lakhs] + " লক্ষ ";
-            if (thousands) result += banglaWords[thousands] + " হাজার ";
-            if (hundreds) result += banglaWords[hundreds] + " শত ";
-            if (rest) result += banglaWords[rest];
-
-            return result.trim();
-        }
-
-        
-    </script>
-</body>
+      // Display the result
+      const resultDiv = document.getElementById("result");
+      if (missingFiles.length > 0) {
+        resultDiv.innerHTML = `<p>Missing file(s):</p><pre>${missingFiles.map(num => num.toString().padStart(5, '0')).join('\n')}</pre>`;
+        resultDiv.style.display = 'block';
+      } else {
+        resultDiv.innerHTML = "<p>All files are present!</p>";
+        resultDiv.style.display = 'block';
+      }
+    }
+      </script>
+      <script>
+         // Number to Bangla Numeric Conversion
+         function convertToNumber() {
+             const input = document.getElementById('banglaNumber').value.trim();
+             const wordsToNumbers = {
+                 'crore': 10000000,
+                 'lac': 100000,
+                 'hajar': 1000
+             };
+             let result = 0;
+             const parts = input.split(' ');
+         
+             for (let i = 0; i < parts.length; i++) {
+                 // Check if the part is a number (including decimal)
+                 const number = parseFloat(parts[i]);
+                 const word = parts[i + 1];
+         
+                 // If a word follows the number
+                 if (!isNaN(number) && wordsToNumbers[word]) {
+                     result += number * wordsToNumbers[word];
+                     i++; // Skip the next word since we processed it
+                 } else if (!isNaN(number) && i === parts.length - 1) {
+                     // If it's the last part and there's no word following, just add the number
+                     result += number;
+                 }
+             }
+         
+             document.getElementById('result1').innerText = result;
+         }
+         
+         const banglaNumbers = [
+             "শূন্য", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়"
+         ];
+         
+         const banglaWords = [
+             "", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়", "দশ", "এগারো", "বারো",
+             "তেরো", "চৌদ্দ", "পনের", "ষোল", "সতেরো", "আঠার", "ঊনিশ", "বিশ", "একুশ", "বাইশ", "তেইশ",
+             "চব্বিশ", "পঁচিশ", "ছাব্বিশ", "সাতাশ", "আঠাশ", "ঊনত্রিশ", "ত্রিশ", "একত্রিশ", "বত্রিশ",
+             "তেত্রিশ", "চৌত্রিশ", "পঁয়ত্রিশ", "ছত্রিশ", "সাইত্রিশ", "আটত্রিশ", "ঊনচল্লিশ", "চল্লিশ",
+             "একচল্লিশ", "বিয়াল্লিশ", "তেতাল্লিশ", "চুয়াল্লিশ", "পঁয়তাল্লিশ", "ছেচল্লিশ", "সাতচল্লিশ",
+             "আটচল্লিশ", "ঊনপঞ্চাশ", "পঞ্চাশ", "একান্ন", "বায়ান্ন", "তিপ্পান্ন", "চুয়ান্ন", "পঞ্চান্ন",
+             "ছাপ্পান্ন", "সাতান্ন", "আটান্ন", "ঊনষাট", "ষাট", "একষট্টি", "বাষট্টি", "তেষট্টি", "চৌষট্টি",
+             "পঁয়ষট্টি", "ছেষট্টি", "সাতষট্টি", "আটষট্টি", "ঊনসত্তর", "সত্তর", "একাত্তর", "বাহাত্তর",
+             "তিয়াত্তর", "চুয়াত্তর", "পঁচাত্তর", "ছিয়াত্তর", "সাতাত্তর", "আটাত্তর", "ঊনআশি", "আশি",
+             "একাশি", "বিরাশি", "তিরাশি", "চুরাশি", "পঁচাশি", "ছিয়াশি", "সাতাশি", "আটাশি", "ঊননব্বই",
+             "নব্বই", "একানব্বই", "বিরানব্বই", "তিরানব্বই", "চুরানব্বই", "পঁচানব্বই", "ছিয়ানব্বই",
+             "সাতানব্বই", "আটানব্বই", "নিরানব্বই", "একশত", "দুইশত", "তিনশত", "চারশত", "পাঁচশত",
+             "ছয়শত", "সাতশত", "আটশত", "নয়শত", "এক হাজার", "দুই হাজার", "তিন হাজার", "চার হাজার",
+             "পাঁচ হাজার", "ছয় হাজার", "সাত হাজার", "আট হাজার", "নয় হাজার", "এক লক্ষ", "দুই লক্ষ",
+             "তিন লক্ষ", "চার লক্ষ", "পাঁচ লক্ষ", "ছয় লক্ষ", "সাত লক্ষ", "আট লক্ষ", "নয় লক্ষ",
+             "দশ লক্ষ", "এগারো লক্ষ", "বারো লক্ষ", "তেরো লক্ষ", "চৌদ্দ লক্ষ", "পনেরো লক্ষ", "ষোল লক্ষ",
+             "সতেরো লক্ষ", "আঠারো লক্ষ", "ঊনিশ লক্ষ", "বিশ লক্ষ", "এক কোটি", "দুই কোটি", "তিন কোটি",
+             "চার কোটি", "পাঁচ কোটি", "ছয় কোটি", "সাত কোটি", "আট কোটি", "নয় কোটি", "দশ কোটি",
+             "এগারো কোটি", "বারো কোটি", "তেরো কোটি", "চৌদ্দ কোটি", "পনেরো কোটি", "ষোল কোটি",
+             "সতেরো কোটি", "আঠারো কোটি", "ঊনিশ কোটি", "বিশ কোটি", "একশত কোটি", "দুইশত কোটি",
+             "তিনশত কোটি", "চারশত কোটি", "পাঁচশত কোটি", "ছয়শত কোটি", "সাতশত কোটি", "আটশত কোটি",
+             "নয়শত কোটি", "এক হাজার কোটি", "দুই হাজার কোটি", "তিন হাজার কোটি", "চার হাজার কোটি",
+             "পাঁচ হাজার কোটি", "ছয় হাজার কোটি", "সাত হাজার কোটি", "আট হাজার কোটি", "নয় হাজার কোটি",
+             "এক লক্ষ কোটি", "দুই লক্ষ কোটি", "তিন লক্ষ কোটি", "চার লক্ষ কোটি", "পাঁচ লক্ষ কোটি",
+             "ছয় লক্ষ কোটি", "সাত লক্ষ কোটি", "আট লক্ষ কোটি", "নয় লক্ষ কোটি", "একশত লক্ষ কোটি",
+             "এক ট্রিলিয়ন"
+         ];
+         
+         function convertNumber() {
+             let input = document.getElementById("inputNumber").value;
+         
+             // Step 1: Remove commas and trim whitespace
+             input = input.replace(/,/g, "").trim();
+         
+             // Step 2: Validate input
+             if (!input || isNaN(input)) {
+                 document.getElementById("result2").innerHTML = "Invalid input. Please enter a valid number.";
+                 return;
+             }
+         
+             // Step 3: Parse input and handle decimals
+             let number = parseFloat(input);
+             if (number < 0) {
+                 document.getElementById("result2").innerHTML = "Negative numbers are not supported.";
+                 return;
+             }
+         
+             // Step 4: Convert the number to Bangla words
+             let banglaWord = numberToBangla(Math.floor(number));
+         
+             // Display result
+             document.getElementById("result2").innerHTML = "Converted Number in Bangla: " + banglaWord;
+         }
+         
+         function numberToBangla(number) {
+             if (number === 0) return banglaNumbers[0];
+         
+             let trillions = Math.floor(number / 1000000000000);
+             let crores = Math.floor((number % 1000000000000) / 10000000);
+             let lakhs = Math.floor((number % 10000000) / 100000);
+             let thousands = Math.floor((number % 100000) / 1000);
+             let hundreds = Math.floor((number % 1000) / 100);
+             let rest = number % 100;
+         
+             let result = "";
+         
+             // Handle trillions
+             if (trillions > 0) {
+                 result += banglaWords[trillions] + " ট্রিলিয়ন ";
+             }
+         
+             // Handle crores
+             if (crores > 0) {
+                 result += banglaWords[crores] + " কোটি ";
+             }
+         
+             // Handle lakhs
+             if (lakhs > 0) {
+                 result += banglaWords[lakhs] + " লক্ষ ";
+             }
+         
+             // Handle thousands
+             if (thousands > 0) {
+                 result += banglaWords[thousands] + " হাজার ";
+             }
+         
+             // Handle hundreds
+             if (hundreds > 0) {
+                 result += banglaWords[hundreds] + " শত ";
+             }
+         
+             // Handle remaining numbers
+             if (rest > 0) {
+                 result += banglaWords[rest];
+             }
+         
+             return result.trim();
+         };
+         
+         //decoder section
+         const subcompanyCodes = {
+             "AL MUZAINI": "11",
+             "THUNES": "15",
+             "I TRANSFER": "13",
+             "AL FARDAN": "16",
+             "MUTHOOT": "12",
+             "CONNECT PLUS": "20",
+             "GCC": "GE",
+             "SHAKA": "19",
+             "ATLANTIC": "21",
+             "DOG PAYMENT": "18",
+             "BD ac Western": "24",
+             "WESTERN": "24",
+             "WORLDWIDE CASH": "25",
+             "OMNEX": "27",
+             "CROSSPAY": "29",
+             "MONDIAL": "35",
+             "WADI": "32",
+             "AMAN": "36",
+             "GUAVAPAY": "37",
+             "LULU": "38",
+             "AL MALEK": "40",
+             "DLOCAL": "42",
+             "D LOCAL": "42",
+             "South Africa (ZAR)": "ZA",
+             "FAST TRACK": "10",
+             "SHIFT": "39",
+             "MONEYGRAM": "45",
+             "GBP": "GB",
+             "Money Gram": "45",
+             "tranx all bank change kore rakhben": "   ===   ",
+             "bank change kore rakhben": "   ===   ",
+             "bank change kore rakben": "   ===   ",
+             "TT all ": "    ===    ",
+             " all TT  ": "    ===    ",
+             "diye change kore rakhben": " ",
+             "er tt ": " ",
+             "e bank change kore rakben ": " --",
+             "tranx all": " ",
+             "tranx ": " ",
+             " diye": " ",
+             " change kore rakhben  ": "   ===   "
+         };
+         
+         function replaceText() {
+             let inputText = document.getElementById('inputText').value;
+             let outputText = inputText;
+         
+             // Flexible matching for "South Africa (ZAR) change kore rakhben [any bank name] diye"
+             outputText = outputText.replace(/\bSouth Africa \(ZAR\) change kore rakhben (.*?) diye\b/gi, "ZA    ====    $1");
+         
+             // Flexible matching for "GBP (UK) all ac [any bank name] diye change kore rakhben"
+             outputText = outputText.replace(/\bGBP \(UK\) all ac (.*?) diye change kore rakhben\b/gi, "GB    ====    $1");
+         
+             // Existing custom replacement rules
+             outputText = outputText.replace(/\bGBP \(UK\) all ac Janata Bank\b/gi, "GB    ====    Janata Bank");
+             outputText = outputText.replace(/\bGB \(UK\) all ac Janata Bank\b/gi, "GB    ====    Janata Bank");
+             outputText = outputText.replace(/South Africa \(ZAR\) change kore rakhben Mercantile bank\b/gi, "ZA    ====    Mercantile bank");
+         
+             // Loop through subcompany codes and replace
+             for (const [name, code] of Object.entries(subcompanyCodes)) {
+                 const regex = new RegExp(`\\b${name}\\b`, 'gi');
+                 outputText = outputText.replace(regex, `${code}`);
+             }
+         
+             const outputElement = document.getElementById('output');
+             outputElement.innerText = outputText;
+             outputElement.classList.remove('placeholder');
+         }
+         
+         function checkEnter(event) {
+             if (event.key === "Enter" && !event.shiftKey) {
+                 event.preventDefault();
+                 replaceText();
+             }
+         }
+      </script>
+      </script>
+   </body>
 </html>
